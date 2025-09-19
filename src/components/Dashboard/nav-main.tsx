@@ -23,12 +23,12 @@ export function NavMain({
 }: {
   items: {
     title: string
-    url: string
     icon?: LucideIcon
     isActive?: boolean
+    onClick?: () => void
     items?: {
       title: string
-      url: string
+      onClick?: () => void
     }[]
   }[]
 }) {
@@ -45,7 +45,7 @@ export function NavMain({
           >
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
-                <SidebarMenuButton tooltip={item.title}>
+                <SidebarMenuButton tooltip={item.title} onClick={item.onClick}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -55,10 +55,8 @@ export function NavMain({
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton asChild>
-                        <a href={subItem.url}>
-                          <span>{subItem.title}</span>
-                        </a>
+                      <SidebarMenuSubButton onClick={subItem.onClick}>
+                        <span>{subItem.title}</span>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}

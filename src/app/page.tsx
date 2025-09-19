@@ -1,20 +1,18 @@
-import CoreValues from "@/components/Helpers/CoreValues";
-import FAQs from "@/components/FAQs";
-import Footer from "@/components/Footer";
-import Hero from "@/components/Hero";
-import Info from "@/components/Info";
-import Navbar from "@/components/Navbar";
+"use client";
+
+import { WalletProvider } from '@solana/wallet-adapter-react';
+import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
+import Landingpage from '@/components/Landingpage';
+
+import '@solana/wallet-adapter-react-ui/styles.css';
 
 
 export default function Home() {
   return (
-    <main className="min-h-screen w-full bg-black relative overflow-hidden">
-      <Navbar />
-      <Hero />
-      <Info />
-      <CoreValues />
-      <FAQs/>
-      <Footer />
-    </main>
+    <WalletProvider wallets={[]} autoConnect>
+      <WalletModalProvider>
+        <Landingpage />
+      </WalletModalProvider>
+    </WalletProvider>
   )
 }

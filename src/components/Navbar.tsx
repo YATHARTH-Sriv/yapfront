@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button } from "./ui/button"
+import WalletButton from "./WalletButtonWrapper"
+import Image from "next/image"
 
 function Navbar() {
   const [isVisible, setIsVisible] = useState(false)
@@ -24,11 +25,12 @@ function Navbar() {
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo/Brand */}
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-lime-400 to-green-500 rounded-lg flex items-center justify-center">
+          <div className="flex items-center ">
+            {/* <div className="w-8 h-8 bg-gradient-to-br from-lime-400 to-green-500 rounded-lg flex items-center justify-center">
               <div className="w-4 h-4 bg-black rounded-sm"></div>
-            </div>
-            <span className="text-white font-bold text-xl">YAPhouse</span>
+            </div> */}
+            <Image src="/logo.png" width={70} height={70} alt="icon"/>
+            <span className="text-white font-bold text-2xl">YAPhouse</span>
           </div>
 
           {/* Navigation Links */}
@@ -59,10 +61,10 @@ function Navbar() {
             </a>
           </div>
 
-          {/* CTA Button */}
-          <Button className="bg-white text-black hover:bg-gray-100 font-medium px-6 py-2 transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-lime-400/20">
-            Connect Wallet
-          </Button>
+          {/* CTA Buttons */}
+          <div className="flex items-center gap-4">
+            <WalletButton />
+          </div>
         </div>
       </div>
     </nav>

@@ -6,7 +6,7 @@ import {
   Home,
   TrendingUp,
   Mic,
-  Heart,
+  Heart, 
   Settings2,
   Radio,
   Calendar,
@@ -24,9 +24,26 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { useWallet } from "@solana/wallet-adapter-react"
+
+type DashboardSection = 
+  | 'home' 
+  | 'trending-rooms' 
+  | 'hosted-rooms' 
+  | 'joined-rooms' 
+  | 'scheduled-rooms' 
+  | 'live-events' 
+  | 'favorites' 
+  | 'discover' 
+  | 'settings'
+
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  activeSection?: DashboardSection
+  setActiveSection?: (section: DashboardSection) => void
+}
 
 // This is sample data.
-const data = {
+const createNavData = (activeSection: DashboardSection, setActiveSection: (section: DashboardSection) => void) => ({
   user: {
     name: "AudioUser",
     email: "user@audioplatform.com",
@@ -52,82 +69,67 @@ const data = {
   navMain: [
     {
       title: "Home",
-      url: "#",
+      section: "home" as DashboardSection,
       icon: Home,
-      isActive: true,
+      isActive: activeSection === "home",
+      onClick: () => setActiveSection("home"),
       items: [
         {
           title: "Dashboard",
-          url: "#",
-        },
-        {
-          title: "Recent Rooms",
-          url: "#",
-        },
-        {
-          title: "Bookmarks",
-          url: "#",
+          section: "home" as DashboardSection,
+          onClick: () => setActiveSection("home"),
         },
       ],
     },
     {
       title: "Trending Rooms",
-      url: "#",
+      section: "trending-rooms" as DashboardSection,
       icon: TrendingUp,
+      isActive: activeSection === "trending-rooms",
+      onClick: () => setActiveSection("trending-rooms"),
       items: [
         {
           title: "Most Popular",
-          url: "#",
-        },
-        {
-          title: "Rising Fast",
-          url: "#",
-        },
-        {
-          title: "New & Hot",
-          url: "#",
+          section: "trending-rooms" as DashboardSection,
+          onClick: () => setActiveSection("trending-rooms"),
         },
       ],
     },
     {
       title: "My Rooms",
-      url: "#",
+      section: "hosted-rooms" as DashboardSection,
       icon: Mic,
+      isActive: ["hosted-rooms", "joined-rooms", "scheduled-rooms"].includes(activeSection),
+      onClick: () => setActiveSection("hosted-rooms"),
       items: [
         {
           title: "Hosted Rooms",
-          url: "#",
+          section: "hosted-rooms" as DashboardSection,
+          onClick: () => setActiveSection("hosted-rooms"),
         },
         {
           title: "Joined Rooms",
-          url: "#",
+          section: "joined-rooms" as DashboardSection,
+          onClick: () => setActiveSection("joined-rooms"),
         },
         {
           title: "Scheduled",
-          url: "#",
+          section: "scheduled-rooms" as DashboardSection,
+          onClick: () => setActiveSection("scheduled-rooms"),
         },
       ],
     },
     {
       title: "Settings",
-      url: "#",
+      section: "settings" as DashboardSection,
       icon: Settings2,
+      isActive: activeSection === "settings",
+      onClick: () => setActiveSection("settings"),
       items: [
         {
           title: "Audio Preferences",
-          url: "#",
-        },
-        {
-          title: "Notifications",
-          url: "#",
-        },
-        {
-          title: "Privacy",
-          url: "#",
-        },
-        {
-          title: "Account",
-          url: "#",
+          section: "settings" as DashboardSection,
+          onClick: () => setActiveSection("settings"),
         },
       ],
     },
@@ -135,23 +137,32 @@ const data = {
   projects: [
     {
       name: "Live Events",
-      url: "#",
+      section: "live-events" as DashboardSection,
       icon: Calendar,
+      onClick: () => setActiveSection("live-events"),
     },
     {
       name: "Favorites",
-      url: "#",
+      section: "favorites" as DashboardSection,
       icon: Heart,
+      onClick: () => setActiveSection("favorites"),
     },
     {
       name: "Discover",
-      url: "#",
+      section: "discover" as DashboardSection,
       icon: Star,
+      onClick: () => setActiveSection("discover"),
     },
   ],
-}
+})
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ activeSection = "home", setActiveSection = () => {}, ...props }: AppSidebarProps) {
+  const {wallet}=useWallet()
+  const publickey=wallet?.adapter.publicKey?.toString()
+  console.log(wallet?.adapter.publicKey?.toBase58())
+  
+  const data = createNavData(activeSection, setActiveSection)
+  
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -162,7 +173,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        {publickey && <NavUser user={publickey} />}
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
