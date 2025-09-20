@@ -1,6 +1,33 @@
 "use client"
 
+import { useState } from 'react'
+import LiveAudioComponent from '../LiveAudioComponent'
+
 export default function HostedRooms() {
+  const [showCreateRoom, setShowCreateRoom] = useState(false)
+
+  // If user clicked create room, show the LiveAudioComponent
+  if (showCreateRoom) {
+    return (
+      <div className="space-y-6">
+        {/* Back button */}
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => setShowCreateRoom(false)}
+            className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Hosted Rooms
+          </button>
+        </div>
+        
+        {/* LiveAudioComponent with full UI (menu mode) */}
+        <LiveAudioComponent initialMode="menu" />
+      </div>
+    )
+  }
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -43,7 +70,10 @@ export default function HostedRooms() {
           </div>
           <h3 className="text-white font-semibold text-lg mb-2">Create New Room</h3>
           <p className="text-gray-400 text-sm mb-4">Start a new audio conversation</p>
-          <button className="bg-green-500/20 hover:bg-green-500/30 text-green-400 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+          <button 
+            onClick={() => setShowCreateRoom(true)}
+            className="bg-green-500/20 hover:bg-green-500/30 text-green-400 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          >
             Create Room
           </button>
         </div>
