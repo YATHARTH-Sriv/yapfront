@@ -58,8 +58,20 @@ const renderContent = (activeSection: DashboardSection) => {
       return <HostedRooms />
     case 'joined-rooms':
       return <JoinedRooms />
+    // case 'settings':
+    //   return <Settings />
     case 'settings':
-      return <Settings />
+      return (
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold text-white">Settings</h1>
+            <p className="text-gray-400">All The Required Settings not just for data but also more quality audio</p>
+          </div>
+          <div className="text-gray-400 text-center py-20">
+             coming soon...
+          </div>
+        </div>
+      )
     case 'trending-rooms':
       return (
         <div className="space-y-6">

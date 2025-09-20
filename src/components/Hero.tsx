@@ -2,12 +2,15 @@
 
 import { useState, useEffect } from "react"
 import { Button } from "./ui/button"
+import { useWallet } from "@solana/wallet-adapter-react"
+import Link from "next/link"
 
 function Hero() {
   const [isVisible, setIsVisible] = useState(false)
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
   const words = ["Creators", "Audience"]
+  const { wallet, publicKey } = useWallet()
 
   useEffect(() => {
     // Trigger animation on mount
@@ -30,6 +33,8 @@ function Hero() {
 
     return () => clearInterval(interval)
   })
+
+  const isWalletConnected = Boolean(wallet?.adapter?.publicKey)
 
   return (
     <div className="relative min-h-[80vh] flex flex-col justify-center items-center pt-20 pb-8 px-4 sm:px-6 lg:px-8">
@@ -86,7 +91,7 @@ function Hero() {
           }`}
         >
           <p className="text-gray-300 text-sm sm:text-base md:text-lg leading-relaxed">
-           A decentralised Audio Platform where the audience gets compensated for the time spent and creators own thier share 
+           A decentralised Audio Platform where the audience gets compensated for the time spent and creators own their share 
           </p>
         </div>
 
@@ -96,9 +101,27 @@ function Hero() {
             isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
-          <Button className="bg-lime-400 hover:bg-lime-500 text-black px-6 py-3 text-sm sm:text-base transition-all duration-200 hover:scale-105 hover:shadow-xl hover:shadow-lime-400/30">
-            Start Creating Now
-          </Button>
+          <div className="relative group inline-block">
+            <Link href="/dashboard">
+            <Button
+              disabled={!isWalletConnected}
+              className={`px-6 py-3 text-sm sm:text-base transition-all duration-200 
+                ${isWalletConnected 
+                  ? "bg-lime-400 hover:bg-lime-500 text-black hover:scale-105 hover:shadow-xl hover:shadow-lime-400/30" 
+                  : "bg-gray-600 text-gray-300 cursor-not-allowed"
+                }`}
+            >
+              Join The Conversation
+            </Button>
+            </Link>
+
+            {/* Tooltip when disabled */}
+            {!isWalletConnected && (
+              <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover:block bg-white text-black text-xs rounded-md px-2 py-1 whitespace-nowrap shadow-lg">
+                Connect your wallet
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
