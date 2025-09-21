@@ -13,7 +13,7 @@ const socials = [
   },
   {
     id: 2,
-    logo: <FaGithub className="text-xl text-white hover:text-black" />,
+    logo: <FaGithub className="text-xl text-white " />,
     link: "https://github.com/yatharth-sriv"
   }
 ];

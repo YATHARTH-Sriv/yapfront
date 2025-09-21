@@ -2,10 +2,14 @@
 import Image from "next/image"
 import { useIntersectionObserver } from "../hooks/useIntersectionObserver"
 import Link from "next/link"
+import { useWallet } from "@solana/wallet-adapter-react"
 
 function Info() {
   const { ref: headerRef, hasIntersected: headerVisible } = useIntersectionObserver()
   const { ref: cardsRef, hasIntersected: cardsVisible } = useIntersectionObserver()
+  const { wallet } = useWallet()
+
+  const isWalletConnected = Boolean(wallet?.adapter?.publicKey)
 
   const predictionCards = [
     {
@@ -25,7 +29,7 @@ function Info() {
     },
   ]
 
-  const AnimatedBubbles = ({ cardIndex }: { cardIndex: number }) => {
+  const AnimatedBubbles = () => {
     return (
       <div className="flex items-center justify-between px-4 py-6">
         {/* Speaker Bubble - Left Side */}
@@ -43,7 +47,7 @@ function Info() {
         <div className="flex flex-col items-center">
           <div className="flex items-center space-x-2 mb-2">
             {/* First row of listener bubbles */}
-            {[1, 2, 3].map((bubble, index) => (
+            {[1, 2, 3].map((bubble) => (
               <div key={`bubble-${bubble}`} className="w-8 h-8 rounded-full overflow-hidden">
                 <Image
                   src="/listnener.jpg"
@@ -57,7 +61,7 @@ function Info() {
           </div>
           <div className="flex items-center space-x-2">
             {/* Second row of listener bubbles */}
-            {[4, 5].map((bubble, index) => (
+            {[4, 5].map((bubble) => (
               <div key={`bubble-${bubble}`} className="w-6 h-6 rounded-full overflow-hidden">
                 <Image
                   src="/listnener.jpg"
@@ -139,7 +143,7 @@ function Info() {
               {/* Title */}
               <h3 className="text-white text-base font-medium mb-6 leading-relaxed">{card.title}</h3>
 
-              <AnimatedBubbles cardIndex={index} />
+              <AnimatedBubbles />
 
               {/* Glassmorphism overlay effect */}
               <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent rounded-2xl pointer-events-none"></div>
@@ -149,11 +153,27 @@ function Info() {
 
         {/* Call to Action */}
         <div className="text-center mt-12 lg:mt-16">
-          <Link href="/dashboard">
-          <button className="bg-lime-400 hover:bg-lime-500 text-black px-8 py-3 rounded-lg font-medium transition-all duration-200 hover:scale-105 hover:shadow-xl hover:shadow-lime-400/30">
-            Join The Conversation
-          </button>
-          </Link>
+          <div className="relative group inline-block">
+            <Link href="/dashboard">
+              <button 
+                disabled={!isWalletConnected}
+                className={`px-8 py-3 rounded-lg font-medium transition-all duration-200 
+                  ${isWalletConnected 
+                    ? "bg-lime-400 hover:bg-lime-500 text-black hover:scale-105 hover:shadow-xl hover:shadow-lime-400/30" 
+                    : "bg-gray-600 text-gray-300 cursor-not-allowed"
+                  }`}
+              >
+                Join The Conversation
+              </button>
+            </Link>
+
+            {/* Tooltip when disabled */}
+            {!isWalletConnected && (
+              <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover:block bg-white text-black text-xs rounded-md px-2 py-1 whitespace-nowrap shadow-lg">
+                Connect your wallet
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
