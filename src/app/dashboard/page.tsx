@@ -6,7 +6,7 @@ import HomeDashboard from "@/components/Dashboard/HomeDashboard"
 import ScheduledRooms from "@/components/Dashboard/ScheduledRooms"
 import HostedRooms from "@/components/Dashboard/HostedRooms"
 import JoinedRooms from "@/components/Dashboard/JoinedRooms"
-import Settings from "@/components/Dashboard/Settings"
+// import Settings from "@/components/Dashboard/Settings"
 import {
   Breadcrumb,
   BreadcrumbItem,

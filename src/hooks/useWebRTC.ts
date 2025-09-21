@@ -93,6 +93,7 @@ export const useWebRTC = (roomId: string, userId: string, isHost: boolean) => {
       socket.off('answer');
       socket.off('ice-candidate');
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket, isHost]);
 
   const createPeerConnection = useCallback((remoteUserId: string) => {
@@ -274,7 +275,7 @@ export const useWebRTC = (roomId: string, userId: string, isHost: boolean) => {
       console.error('Error starting audio:', error);
       alert('Failed to access microphone. Please check permissions.');
     }
-  }, [isHost, participants, socket, userId, createConnectionAndOffer]);
+  }, [isHost, participants, userId, createConnectionAndOffer]);
 
   const stopAudio = useCallback(() => {
     console.log('Stopping audio...');

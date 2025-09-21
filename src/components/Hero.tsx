@@ -10,7 +10,7 @@ function Hero() {
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
   const words = ["Creators", "Audience"]
-  const { wallet, publicKey } = useWallet()
+  const { wallet} = useWallet()
 
   useEffect(() => {
     // Trigger animation on mount
