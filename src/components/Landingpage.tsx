@@ -10,11 +10,19 @@ function Landingpage() {
   return (
      <main className="min-h-screen w-full bg-black relative overflow-hidden">
       <Navbar />
-      <Hero />
-      <Info />
-      <CoreValues />
-      <FAQs/>
-      <Footer />
+      <section id="home">
+        <Hero />
+      </section>
+      <section id="rooms">
+        <Info />
+      </section>
+      <section id="core-values">
+        <CoreValues />
+      </section>
+      <section id="about">
+        <FAQs/>
+        <Footer />
+      </section>
     </main>
   )
 }
